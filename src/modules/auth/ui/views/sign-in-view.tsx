@@ -1,3 +1,4 @@
+// src/modules/auth/ui/views/sign-in-view.tsx
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {FaGithub, FaGoogle} from "react-icons/fa"
 import {
   Form,
   FormControl,
@@ -18,9 +18,9 @@ import {
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -47,7 +47,6 @@ export const SignInView = () => {
       {
         email: data.email,
         password: data.password,
-        callbackURL:"/",
       },
       {
         onSuccess: () => {
@@ -61,26 +60,6 @@ export const SignInView = () => {
       }
     );
   };
-
-    const onSocial = (provider: "github" | "google") => {
-      setError(null);
-      setPending(true);
-      authClient.signIn.social(
-        {
-         provider:provider,
-         callbackURL:"/",
-        },
-        {
-          onSuccess: () => {
-            setPending(false);
-          },
-          onError: ({ error }) => {
-            setPending(false);
-            setError(error.message);
-          },
-        }
-      );
-    };
 
   return (
     <div className="flex flex-col gap-6">
@@ -149,22 +128,20 @@ export const SignInView = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <Button
-                      onClick={()=> onSocial("google")}
                     disabled={pending}
                     variant="outline"
                     type="button"
                     className="w-full"
                   >
-                    <FaGoogle/>
+                    Google
                   </Button>
                   <Button
                     disabled={pending}
-                     onClick={()=> onSocial("github")}
                     variant="outline"
                     type="button"
                     className="w-full"
                   >
-                    <FaGithub />
+                    Github
                   </Button>
                 </div>
                 <div className="text-center text-sm ">
@@ -179,7 +156,7 @@ export const SignInView = () => {
               </div>
             </form>
           </Form>
-          <div className="bg-radial from-green-700  to-green-800 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+          <div className="bg-radial from-sidebar-accent  to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
             <img src="/logo.svg" alt="Image" className="h-[92px] w-[92px]" />
             <p className="text-2xl font-semibold text-white">HIVE.AI</p>
           </div>
