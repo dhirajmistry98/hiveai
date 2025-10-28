@@ -1,23 +1,31 @@
-
-import { AgentsViewError, AgentsViewLoading, AgentsViews } from "@/modules/agents/ui/views/agents-view"
-import { getQueryClient, trpc } from "@/trpc/server"
+import {
+  AgentsViewError,
+  AgentsViewLoading,
+  AgentsViews,
+} from "@/modules/agents/ui/views/agents-view";
+import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
-import {ErrorBoundary} from "react-error-boundary"
+import { ErrorBoundary } from "react-error-boundary";
 
-
-const Page = async  () => {
+const Page = async () => {
   const queryClient = getQueryClient();
-  void queryClient.refetchQueries(trpc.agents.getMany.queryOptions());
+
+
+  await queryClient.prefetchQuery({
+    queryKey: [["agents", "getMany"]],
+    queryFn: () => trpc.agents.getMany.query(),
+  });
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<AgentsViewLoading/>}>
-      <AgentsViews/>
-      <ErrorBoundary fallback={<AgentsViewError/>}>
+      <ErrorBoundary fallback={<AgentsViewError />}>
+        <Suspense fallback={<AgentsViewLoading />}>
+          <AgentsViews />
+        </Suspense>
       </ErrorBoundary>
-      </Suspense>
     </HydrationBoundary>
-)
-}
+  );
+};
 
-export default Page
+export default Page;

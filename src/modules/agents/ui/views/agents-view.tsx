@@ -9,7 +9,7 @@ export const AgentsViews = () => {
   const [ data ] = trpc.agents.getMany.useSuspenseQuery();
 
   return (
-    <div className="p-4">
+    <div>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
