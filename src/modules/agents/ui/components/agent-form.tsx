@@ -1,10 +1,10 @@
-import { trpc } from "@/trpc/client";
 import { z } from "zod";
 import { AgentGetOne } from "../../types";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { agentsInsertSchema } from "../../scehmas";
+import { agentsInsertSchema } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTRPC } from "@/trpc/client";
 import {
   Form,
   FormControl,
@@ -17,7 +17,8 @@ import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { toast} from "sonner"
+
 
 interface AgentFormProps {
   onSuccess?: () => void;
@@ -30,26 +31,30 @@ export const AgentForm = ({
   onCancel,
   initialValues,
 }: AgentFormProps) => {
+  const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const utils = trpc.useUtils();
 
-  const createAgent = trpc.agents.create.useMutation({
-    onSuccess: async () => {
-      // Invalidate the list query
-      await utils.agents.getMany.invalidate();
-      
-      // Invalidate the specific agent query if editing
-      if (initialValues?.id) {
-        await utils.agents.getOne.invalidate({ id: initialValues.id });
-      }
-      
-      toast.success(initialValues?.id ? "Agent updated" : "Agent created");
-      onSuccess?.();
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+  const createAgent = useMutation(
+    trpc.agents.create.mutationOptions({
+      onSuccess:async() =>{
+       await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions(),
+        );
+        if (initialValues?.id) {
+         await  queryClient.invalidateQueries(
+            trpc.agents.getOne.queryOptions({
+              id:initialValues.id
+            }),
+          )
+        }
+        onSuccess?.();
+      },
+       oneError:(error) => {
+        toast.error(error.message)
+        //
+       },
+    }),
+);
 
   const form = useForm<z.infer<typeof agentsInsertSchema>>({
     resolver: zodResolver(agentsInsertSchema),
