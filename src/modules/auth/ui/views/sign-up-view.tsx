@@ -103,11 +103,11 @@ export const SignUpView = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col  items-center text-center">
-                  <h1 className="text-2xl font-bold ">
-                    Let&apos;s get started
+                  <h1 className="text-3xl font-bold ">
+                    Let&apos;s Get Started
                   </h1>
-                  <p className="text-muted-foreground text-balance">
-                    Create your account
+                  <p className="text-muted-foreground text-balance text-xs gap-2">
+                    Create your HIVE.AI account today
                   </p>
                 </div>
                 <div className="grid gap-3 ">
@@ -197,7 +197,7 @@ export const SignUpView = () => {
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">
-                    Or continue with
+                    Or sign up with
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
