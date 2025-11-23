@@ -10,7 +10,7 @@ export const CancelledState = ({
         title="Meeting Cancelled"
         description="This meeting has been cancelled and can no longer be accessed."
       />
-      <div className="flex flex-col-reverse lg:flex-row lg-justify-center items-center gap-2 w-full">
+      <div className="flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-full">
       </div>
     </div>
   );
