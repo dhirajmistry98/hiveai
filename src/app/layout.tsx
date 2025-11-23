@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-
 import { TRPCReactProvider } from "@/trpc/client";
 import { Inter } from "next/font/google";
-import {NuqsAdapter} from "nuqs/adapters/next"
+import { NuqsAdapter } from "nuqs/adapters/next";
 
 import "./globals.css";
-
 import { Toaster } from "@/components/ui/sonner";
+
+
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,19 +20,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <NuqsAdapter>
-    <TRPCReactProvider>
-      <html lang="en">
-        <body className={`${inter.className} antialiased`}>
-          {children}
-          <Toaster />
-        </body>
-      </html>
-    </TRPCReactProvider>
+      <TRPCReactProvider>
+        <html lang="en">
+          <body className={`${inter.className} antialiased relative`}>
+
+            <div className="relative z-10">{children}</div>
+
+            <Toaster />s
+          </body>
+        </html>
+      </TRPCReactProvider>
     </NuqsAdapter>
   );
 }

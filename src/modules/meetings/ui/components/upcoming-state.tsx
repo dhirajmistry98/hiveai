@@ -22,7 +22,7 @@ export const UpcomingState = ({
         title="Meeting hasn’t begun"
         description="Your meeting summary will appear here once it starts."
       />
-      <div className="flex flex-col-reverse lg:flex-row lg-justify-center items-center gap-2 w-full">
+      <div className="flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-full">
         <Button variant="secondary" className="w-full lg:w-auto" onClick={onCancelMeeting}
         disabled={isCancelling}
         >

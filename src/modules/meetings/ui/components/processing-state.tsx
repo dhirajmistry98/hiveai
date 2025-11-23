@@ -9,9 +9,8 @@ export const ProcessingState = ({
        image="/processing.svg"
 title="Processing Meeting"
 description="We are finalizing your meeting details. This may take a few moments."
-
       />
-      <div className="flex flex-col-reverse lg:flex-row lg-justify-center items-center gap-2 w-full">
+      <div className="flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-full">
       </div>
     </div>
   );
