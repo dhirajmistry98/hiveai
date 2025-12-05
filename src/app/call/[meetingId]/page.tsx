@@ -6,9 +6,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 interface Props {
-  params: {
+  params: Promise<{
     meetingId: string;
-  };
+  }>;
 }
 
 const Page = async ({ params }: Props) => {
